@@ -1,15 +1,15 @@
 {
   "files": {
-    "main.css": "/profile/static/css/main.9440b3c3.css",
-    "main.js": "/profile/static/js/main.fb998c6c.js",
-    "static/js/488.23ad059d.chunk.js": "/profile/static/js/488.23ad059d.chunk.js",
-    "index.html": "/profile/index.html",
-    "main.9440b3c3.css.map": "/profile/static/css/main.9440b3c3.css.map",
-    "main.fb998c6c.js.map": "/profile/static/js/main.fb998c6c.js.map",
-    "488.23ad059d.chunk.js.map": "/profile/static/js/488.23ad059d.chunk.js.map"
+    "main.css": "/Riccardo-bonato.dev/static/css/main.9440b3c3.css",
+    "main.js": "/Riccardo-bonato.dev/static/js/main.cf70a6e1.js",
+    "static/js/488.23ad059d.chunk.js": "/Riccardo-bonato.dev/static/js/488.23ad059d.chunk.js",
+    "index.html": "/Riccardo-bonato.dev/index.html",
+    "main.9440b3c3.css.map": "/Riccardo-bonato.dev/static/css/main.9440b3c3.css.map",
+    "main.cf70a6e1.js.map": "/Riccardo-bonato.dev/static/js/main.cf70a6e1.js.map",
+    "488.23ad059d.chunk.js.map": "/Riccardo-bonato.dev/static/js/488.23ad059d.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.9440b3c3.css",
-    "static/js/main.fb998c6c.js"
+    "static/js/main.cf70a6e1.js"
   ]
 }
