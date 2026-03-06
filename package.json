@@ -2,7 +2,7 @@
   "name": "resume-website",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://riccardomariobonato.github.io/Riccardo-bonato.dev/",
+  "homepage": "https://riccardomariobonato.github.io/RickFolio/",
   "dependencies": {
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
@@ -12,7 +12,8 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "deploy": "npm run build && gh-pages -d build",
+    "deploy": "gh-pages -d build",
+    "predeploy": "react-scripts build",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
