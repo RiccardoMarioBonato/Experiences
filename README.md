@@ -1,8 +1,8 @@
-# RickFolio — Live Resume Platform
+# RickFolio Resume Platform
 
-> "This isn't a PDF. It's a living resume — built from scratch, designed to show you exactly what I can do before you even reach out."
+> "This isn't a PDF. It's a living resume  built from scratch, designed to show you exactly what I can do before you even reach out."
 
-**RickFolio** is a full-stack, role-based resume portfolio platform built by **Riccardo M. Bonato**. Instead of a static PDF, this resume lives as a dynamic, interactive site — managed through an admin, annotated by recruiters with comments, and publicly viewable by anyone with the link.
+**RickFolio** is a full-stack, role-based resume portfolio platform built by **Riccardo M. Bonato**. Instead of a static PDF, this resume lives as a dynamic, interactive site managed through an admin, annotated by recruiters with comments, and publicly viewable by anyone with the link.
 
 
 ---
@@ -47,53 +47,53 @@ docker-compose.yml
 
 ## User Roles & Permissions
 
-### 👨‍💻 Admin (Portfolio Owner)
+### Admin (Portfolio Owner)
 | Permission | Access |
 |---|---|
 | Resume Sections | Full CRUD |
 | User Accounts | Full CRUD |
 | Recruiter Comments | Read + Delete |
-| Admin Dashboard | ✅ Full Access |
+| Admin Dashboard | Full Access |
 
-### 🧑‍💼 Recruiter (Hiring Manager)
+### Recruiter (Hiring Manager)
 | Permission | Access |
 |---|---|
 | Resume Content | Read Only |
 | Own Comments | Full CRUD |
 | Other Comments | Read Only |
-| Admin Dashboard | ❌ No Access |
+| Admin Dashboard | No Access |
 
-### 🌐 Guest (Public Visitor)
+### Guest (Public Visitor)
 | Permission | Access |
 |---|---|
 | Public Resume Page | Read Only |
-| PDF Download | ✅ Allowed |
-| Comments | ❌ No Access |
-| Login Required | ❌ None |
+| PDF Download | Allowed |
+| Comments | No Access |
+| Login Required | None |
 
 ---
 
 ## Technology Stack
 
 ### Frontend
-- **Next.js 14** — App Router, SSR for public resume page (SEO friendly)
-- **Tailwind CSS** — Responsive, utility-first styling
-- **Axios** — HTTP client with JWT interceptors
+- **Next.js 14**  App Router, SSR for public resume page (SEO friendly)
+- **Tailwind CSS**  Responsive, utility-first styling
+- **Axios**  HTTP client with JWT interceptors
 
 ### Backend
-- **FastAPI** — REST API with auto Swagger docs at `/docs`
-- **Uvicorn** — ASGI server
-- **python-jose** — JWT token creation and verification
-- **passlib + bcrypt** — Secure password hashing
+- **FastAPI**  REST API with auto Swagger docs at `/docs`
+- **Uvicorn**  ASGI server
+- **python-jose**  JWT token creation and verification
+- **passlib + bcrypt**  Secure password hashing
 
 ### Database
-- **PostgreSQL** — Relational database
-- **SQLAlchemy** — ORM for models and queries
-- **Alembic** — Schema migration management
+- **PostgreSQL**  Relational database
+- **SQLAlchemy**  ORM for models and queries
+- **Alembic**  Schema migration management
 
 ### DevOps
-- **Docker** — Containerizes each service (frontend, backend, db)
-- **Docker Compose** — Orchestrates all containers with one command
+- **Docker**  Containerizes each service (frontend, backend, db)
+- **Docker Compose** Orchestrates all containers with one command
 
 ---
 
@@ -101,7 +101,7 @@ docker-compose.yml
 
 ### Prerequisites
 - [Docker Desktop](https://www.docker.com/products/docker-desktop/) installed and running
-- That's it — no need to install Node.js, Python, or PostgreSQL locally
+- That's it  no need to install Node.js, Python, or PostgreSQL locally
 
 ---
 
@@ -198,13 +198,14 @@ docker-compose exec db psql -U postgres -d rickfolio
 
 | Role | URL | Login Required |
 |---|---|---|
-| Guest | `http://localhost:3000` | ❌ No |
-| Recruiter | `http://localhost:3000/login` | ✅ Yes |
-| Admin | `http://localhost:3000/login` | ✅ Yes |
-| API Docs | `http://localhost:8000/docs` | ❌ No |
+| Guest | `http://localhost:3000` | No |
+| Recruiter | `http://localhost:3000/login` | Yes |
+| Admin | `http://localhost:3000/login` | Yes |
+| API Docs | `http://localhost:8000/docs` | No |
 
 ---
 ## Author
 
 **Riccardo M. Bonato**  
 Full-Stack Developer  
+`https://github.com/RiccardoMarioBonato/RickFolio`
