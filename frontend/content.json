@@ -1,0 +1,91 @@
+{
+  "site": {
+    "name": "RickFolio",
+    "owner": "Riccardo M. Bonato",
+    "tagline": "Full-Stack Developer",
+    "description": "This isn't a PDF. It's a living resume — built from scratch, managed in real time.",
+    "email": "riccardo@email.com",
+    "github": "https://github.com/RiccardoMarioBonato",
+    "linkedin": "https://linkedin.com/in/riccardo-bonato"
+  },
+  "login": {
+    "heading": "Welcome Back",
+    "subheading": "Sign in to access your dashboard",
+    "emailPlaceholder": "you@example.com",
+    "passwordPlaceholder": "••••••••",
+    "submitButton": "Sign In",
+    "noAccountText": "Don't have an account?",
+    "registerLink": "Register as Recruiter",
+    "guestLinkText": "View resume without signing in →",
+    "errorMessages": {
+      "invalidCredentials": "Invalid email or password. Please try again.",
+      "serverError": "Something went wrong. Please try again later."
+    }
+  },
+  "register": {
+    "heading": "Create Recruiter Account",
+    "subheading": "Register to leave feedback on this portfolio",
+    "namePlaceholder": "Your full name",
+    "emailPlaceholder": "you@company.com",
+    "passwordPlaceholder": "Choose a password",
+    "submitButton": "Create Account",
+    "hasAccountText": "Already have an account?",
+    "loginLink": "Sign in"
+  },
+  "admin": {
+    "heading": "Admin Dashboard",
+    "subheading": "Manage your resume content and recruiter activity",
+    "tabs": {
+      "resume": "Resume Sections",
+      "recruiters": "Recruiter Activity",
+      "users": "Manage Users"
+    },
+    "resumeSection": {
+      "addButton": "Add Section",
+      "editButton": "Edit",
+      "deleteButton": "Delete",
+      "emptyState": "No resume sections yet. Click 'Add Section' to get started.",
+      "sectionTypes": ["experience", "education", "skills", "projects", "about"]
+    },
+    "recruiterSection": {
+      "emptyState": "No recruiters have left comments yet.",
+      "tableHeaders": ["Recruiter", "Comment", "Section", "Date", "Actions"]
+    },
+    "usersSection": {
+      "emptyState": "No users found.",
+      "tableHeaders": ["Name", "Email", "Role", "Joined", "Actions"]
+    }
+  },
+  "recruiter": {
+    "heading": "Portfolio Review",
+    "subheading": "Leave feedback on any section below",
+    "commentPlaceholder": "Leave a comment on this section...",
+    "submitComment": "Post Comment",
+    "editComment": "Edit",
+    "deleteComment": "Delete",
+    "saveEdit": "Save",
+    "cancelEdit": "Cancel",
+    "emptyComments": "No comments yet. Be the first to leave feedback.",
+    "myCommentsHeading": "Your Comments",
+    "noCommentsYet": "You haven't left any comments yet."
+  },
+  "resume": {
+    "hero": {
+      "greeting": "Hi, I'm",
+      "name": "Riccardo M. Bonato",
+      "role": "Full-Stack Developer",
+      "bio": "I build full-stack web applications with a focus on clean architecture and great user experience. Currently open to new opportunities.",
+      "ctaButton": "View My Work",
+      "downloadButton": "Download PDF"
+    },
+    "about": {
+      "heading": "About Me",
+      "body": "[ EDIT THIS ] Write a short paragraph about yourself — your background, what you love building, your goals. Keep it 3-5 sentences."
+    },
+    "contact": {
+      "heading": "Get In Touch",
+      "body": "I'm currently open to new opportunities. Whether you have a question or just want to say hi, my inbox is always open.",
+      "buttonText": "Say Hello"
+    }
+  }
+}
