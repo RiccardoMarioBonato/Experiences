@@ -7,7 +7,16 @@ const config: Config = {
     "./app/**/*.{js,ts,jsx,tsx,mdx}",
   ],
   theme: {
-    extend: {},
+    extend: {
+      colors: {
+        neon: {
+          purple: "#E040FB",
+          pink: "#F50057",
+        },
+        surface: "#13111A",
+        "bg-dark": "#0D0D0F",
+      },
+    },
   },
   plugins: [],
 };

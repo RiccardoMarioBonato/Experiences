@@ -44,7 +44,6 @@ export default function HomePage() {
         const res = await api.get<ResumeSection[]>("/resume/");
         setSections(res.data);
 
-        // Fetch comments for all sections in parallel
         const entries = await Promise.all(
           res.data.map(async (s) => {
             const c = await api.get<Comment[]>(`/comments/${s.id}`);
@@ -61,7 +60,6 @@ export default function HomePage() {
     load();
   }, []);
 
-  // Group sections by type, ordered by SECTION_ORDER
   const grouped = SECTION_ORDER.reduce<Record<string, ResumeSection[]>>((acc, type) => {
     const items = sections
       .filter((s) => s.section_type === type)
@@ -71,34 +69,55 @@ export default function HomePage() {
   }, {});
 
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-100">
+    <div className="min-h-screen bg-[#0D0D0F] text-white animate-fade-in">
 
       {/* ── HERO ─────────────────────────────────────────── */}
       <section className="relative flex flex-col items-center justify-center min-h-[90vh] px-6 text-center overflow-hidden">
         {/* Background glow */}
         <div className="absolute inset-0 pointer-events-none">
-          <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[500px] h-[300px] bg-indigo-600/10 rounded-full blur-3xl" />
+          <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[500px] h-[300px] rounded-full blur-3xl"
+            style={{ background: "rgba(224, 64, 251, 0.08)" }} />
+          <div className="absolute top-1/3 left-1/2 -translate-x-1/2 w-[300px] h-[200px] rounded-full blur-3xl"
+            style={{ background: "rgba(245, 0, 87, 0.06)" }} />
         </div>
 
         {/* Role badge */}
-        <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-indigo-500/10 border border-indigo-500/25 text-indigo-400 text-sm font-medium mb-6">
-          <span className="w-1.5 h-1.5 rounded-full bg-indigo-400 animate-pulse" />
+        <span
+          className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-sm font-medium mb-6 animate-pulse-glow"
+          style={{
+            background: "rgba(224, 64, 251, 0.1)",
+            border: "1px solid rgba(224, 64, 251, 0.3)",
+            color: "#E040FB",
+          }}
+        >
+          <span className="w-1.5 h-1.5 rounded-full bg-[#E040FB] animate-pulse" />
           {copy.hero.role}
         </span>
 
-        <h1 className="text-5xl sm:text-6xl font-black tracking-tight text-white mb-4">
+        <h1
+          className="text-5xl sm:text-6xl font-black tracking-tight text-white mb-4 animate-slide-in-left"
+        >
           {copy.hero.greeting}{" "}
-          <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-purple-500">
+          <span
+            className="text-transparent bg-clip-text"
+            style={{ backgroundImage: "linear-gradient(135deg, #E040FB, #F50057)" }}
+          >
             {copy.hero.name}
           </span>
         </h1>
 
-        <p className="text-slate-400 text-lg max-w-2xl leading-relaxed mb-10">
+        <p
+          className="text-[#A0A0B8] text-lg max-w-2xl leading-relaxed mb-10 animate-fade-up"
+          style={{ animationDelay: "150ms" }}
+        >
           {copy.hero.bio}
         </p>
 
         {/* CTA buttons */}
-        <div className="flex flex-wrap justify-center gap-4">
+        <div
+          className="flex flex-wrap justify-center gap-4 animate-fade-up"
+          style={{ animationDelay: "300ms" }}
+        >
           <button
             onClick={() => resumeRef.current?.scrollIntoView({ behavior: "smooth" })}
             className="btn-primary flex items-center gap-2"
@@ -117,16 +136,27 @@ export default function HomePage() {
         </div>
 
         {/* Social links */}
-        <div className="flex items-center gap-6 mt-10 text-slate-500">
+        <div
+          className="flex items-center gap-6 mt-10 animate-fade-up"
+          style={{ animationDelay: "450ms", color: "#A0A0B8" }}
+        >
           {site.github && (
-            <a href={site.github} target="_blank" rel="noopener noreferrer"
-              className="hover:text-slate-300 transition-colors">
+            <a
+              href={site.github}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:text-[#E040FB] transition-colors duration-200"
+            >
               <Github size={20} />
             </a>
           )}
           {site.linkedin && (
-            <a href={site.linkedin} target="_blank" rel="noopener noreferrer"
-              className="hover:text-slate-300 transition-colors">
+            <a
+              href={site.linkedin}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:text-[#E040FB] transition-colors duration-200"
+            >
               <Linkedin size={20} />
             </a>
           )}
@@ -137,10 +167,13 @@ export default function HomePage() {
       <section ref={resumeRef} className="max-w-4xl mx-auto px-6 pb-24 pt-4">
 
         {/* PDF download strip */}
-        <div className="flex items-center justify-between mb-10 pb-6 border-b border-slate-800">
+        <div
+          className="flex items-center justify-between mb-10 pb-6"
+          style={{ borderBottom: "1px solid rgba(224, 64, 251, 0.15)" }}
+        >
           <div>
             <h2 className="text-xl font-bold text-white">Resume</h2>
-            <p className="text-slate-500 text-sm mt-0.5">Live content — updated in real time</p>
+            <p className="text-[#A0A0B8] text-sm mt-0.5">Live content — updated in real time</p>
           </div>
           <button
             onClick={() => window.print()}
@@ -154,17 +187,20 @@ export default function HomePage() {
         {loading ? (
           <div className="space-y-4">
             {[...Array(5)].map((_, i) => (
-              <div key={i} className="card animate-pulse">
-                <div className="h-4 bg-slate-800 rounded w-1/4 mb-3" />
-                <div className="h-6 bg-slate-800 rounded w-3/4 mb-2" />
-                <div className="h-4 bg-slate-800 rounded w-full" />
+              <div key={i} className="card">
+                <div className="skeleton h-4 w-1/4 mb-3" />
+                <div className="skeleton h-6 w-3/4 mb-2" />
+                <div className="skeleton h-4 w-full" />
               </div>
             ))}
           </div>
         ) : sections.length === 0 ? (
           <div className="text-center py-24">
-            <p className="text-slate-500 text-sm">No resume content available yet.</p>
-            <Link href="/login" className="text-indigo-400 text-sm mt-2 inline-block hover:underline">
+            <p className="text-[#A0A0B8] text-sm">No resume content available yet.</p>
+            <Link
+              href="/login"
+              className="text-[#E040FB] text-sm mt-2 inline-block hover:underline"
+            >
               Sign in as Admin to add content →
             </Link>
           </div>
@@ -174,14 +210,14 @@ export default function HomePage() {
               <div key={type}>
                 {/* Section type heading */}
                 <div className="flex items-center gap-3 mb-5">
-                  <div className="h-px flex-1 bg-slate-800" />
+                  <div className="h-px flex-1" style={{ background: "rgba(224, 64, 251, 0.15)" }} />
                   <span className="section-chip">{type}</span>
-                  <div className="h-px flex-1 bg-slate-800" />
+                  <div className="h-px flex-1" style={{ background: "rgba(224, 64, 251, 0.15)" }} />
                 </div>
 
                 <div className="space-y-4">
-                  {items.map((section) => (
-                    <ResumeSectionCard key={section.id} section={section}>
+                  {items.map((section, i) => (
+                    <ResumeSectionCard key={section.id} section={section} index={i}>
                       <CommentPanel
                         sectionId={section.id}
                         initialComments={comments[section.id] ?? []}
@@ -196,10 +232,20 @@ export default function HomePage() {
       </section>
 
       {/* ── FOOTER ───────────────────────────────────────── */}
-      <footer className="border-t border-slate-800 py-8 text-center text-slate-600 text-sm">
+      <footer
+        className="py-8 text-center text-sm"
+        style={{
+          borderTop: "1px solid rgba(224, 64, 251, 0.15)",
+          color: "rgba(160, 160, 184, 0.5)",
+        }}
+      >
         <p>
-          Built by <span className="text-slate-400">{site.owner}</span> ·{" "}
-          <Link href="/login" className="hover:text-slate-400 transition-colors">
+          Built by{" "}
+          <span className="text-[#A0A0B8]">{site.owner}</span> ·{" "}
+          <Link
+            href="/login"
+            className="hover:text-[#E040FB] transition-colors"
+          >
             Admin login
           </Link>
         </p>

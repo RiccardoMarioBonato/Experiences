@@ -7,6 +7,13 @@ import api from "@/lib/api";
 import { saveAuth } from "@/lib/auth";
 import content from "@/content.json";
 
+const inputCls =
+  "w-full rounded-lg px-4 py-3 text-sm text-white placeholder-[#A0A0B8] focus:outline-none transition-all";
+const inputStyle = {
+  background: "#13111A",
+  border: "1px solid rgba(224, 64, 251, 0.2)",
+};
+
 export default function LoginPage() {
   const router = useRouter();
   const [email, setEmail] = useState("");
@@ -35,14 +42,22 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-950 flex flex-col justify-center py-12 px-6">
+    <div className="min-h-screen bg-[#0D0D0F] flex flex-col justify-center py-12 px-6 animate-fade-in">
       <div className="max-w-md w-full mx-auto">
         <div className="text-center mb-10">
           <h2 className="text-3xl font-bold text-white">{content.login.heading}</h2>
-          <p className="text-gray-400 mt-2 text-sm">{content.login.subheading}</p>
+          <p className="text-[#A0A0B8] mt-2 text-sm">{content.login.subheading}</p>
         </div>
 
-        <form onSubmit={handleSubmit} className="bg-gray-900 border border-gray-800 rounded-2xl p-8 shadow-xl">
+        <form
+          onSubmit={handleSubmit}
+          className="rounded-2xl p-8"
+          style={{
+            background: "#13111A",
+            border: "1px solid rgba(224, 64, 251, 0.2)",
+            boxShadow: "0 0 40px rgba(224, 64, 251, 0.05)",
+          }}
+        >
           {error && (
             <div className="bg-red-500/10 border border-red-500/20 text-red-400 text-sm px-4 py-3 rounded-lg mb-6">
               {error}
@@ -51,32 +66,50 @@ export default function LoginPage() {
 
           <div className="space-y-5">
             <div>
-              <label className="block text-sm font-medium text-gray-300 mb-2">Email</label>
+              <label className="label">Email</label>
               <input
                 type="email"
                 required
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder={content.login.emailPlaceholder}
-                className="w-full bg-gray-800 border border-gray-700 text-white rounded-lg px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                className={inputCls}
+                style={inputStyle}
+                onFocus={(e) => {
+                  e.currentTarget.style.borderColor = "#F50057";
+                  e.currentTarget.style.boxShadow = "0 0 0 2px rgba(245, 0, 87, 0.25)";
+                }}
+                onBlur={(e) => {
+                  e.currentTarget.style.borderColor = "rgba(224, 64, 251, 0.2)";
+                  e.currentTarget.style.boxShadow = "";
+                }}
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-300 mb-2">Password</label>
+              <label className="label">Password</label>
               <input
                 type="password"
                 required
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder={content.login.passwordPlaceholder}
-                className="w-full bg-gray-800 border border-gray-700 text-white rounded-lg px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                className={inputCls}
+                style={inputStyle}
+                onFocus={(e) => {
+                  e.currentTarget.style.borderColor = "#F50057";
+                  e.currentTarget.style.boxShadow = "0 0 0 2px rgba(245, 0, 87, 0.25)";
+                }}
+                onBlur={(e) => {
+                  e.currentTarget.style.borderColor = "rgba(224, 64, 251, 0.2)";
+                  e.currentTarget.style.boxShadow = "";
+                }}
               />
             </div>
 
             <button
               type="submit"
               disabled={loading}
-              className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-3 rounded-lg transition-colors mt-2"
+              className="w-full btn-primary justify-center py-3 rounded-lg mt-2 font-semibold disabled:opacity-50"
             >
               {loading ? "Signing in..." : content.login.submitButton}
             </button>
@@ -84,13 +117,19 @@ export default function LoginPage() {
         </form>
 
         <div className="mt-8 text-center space-y-4">
-          <p className="text-gray-400 text-sm">
+          <p className="text-[#A0A0B8] text-sm">
             {content.login.noAccountText}{" "}
-            <Link href="/register" className="text-indigo-400 hover:text-indigo-300 font-medium">
+            <Link
+              href="/register"
+              className="text-[#E040FB] hover:text-[#F50057] font-medium transition-colors"
+            >
               {content.login.registerLink}
             </Link>
           </p>
-          <Link href="/" className="inline-block text-gray-500 hover:text-gray-300 text-sm transition-colors">
+          <Link
+            href="/"
+            className="inline-block text-[#A0A0B8] hover:text-white text-sm transition-colors"
+          >
             {content.login.guestLinkText}
           </Link>
         </div>

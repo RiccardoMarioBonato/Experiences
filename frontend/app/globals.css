@@ -4,35 +4,189 @@
 
 :root {
   --foreground-rgb: 255, 255, 255;
-  --background-start-rgb: 0, 0, 0;
-  --background-end-rgb: 0, 0, 0;
+  --bg-primary: #0D0D0F;
+  --bg-surface: #13111A;
+  --accent-primary: #E040FB;
+  --accent-secondary: #F50057;
+  --text-muted: #A0A0B8;
+  --border-color: rgba(224, 64, 251, 0.15);
 }
 
 body {
   color: rgb(var(--foreground-rgb));
-  background: black;
+  background: #0D0D0F;
 }
+
+/* ── Keyframes ─────────────────────────────────────────── */
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slideInLeft {
+  from { opacity: 0; transform: translateX(-30px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes pulseGlow {
+  0%, 100% { box-shadow: 0 0 8px 2px rgba(224, 64, 251, 0.4); }
+  50%       { box-shadow: 0 0 24px 8px rgba(224, 64, 251, 0.7); }
+}
+
+@keyframes shimmer {
+  0%   { background-position: -200% center; }
+  100% { background-position:  200% center; }
+}
+
+@keyframes slideDown {
+  from { opacity: 0; transform: translateY(-10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes commentExit {
+  from { opacity: 1; max-height: 300px; padding-top: 0.75rem; padding-bottom: 0.75rem; margin-bottom: 1rem; }
+  to   { opacity: 0; max-height: 0;     padding-top: 0;        padding-bottom: 0;        margin-bottom: 0; }
+}
+
+@keyframes skeletonShimmer {
+  0%   { background-position: -400px 0; }
+  100% { background-position:  400px 0; }
+}
+
+/* ── Animation utility classes ─────────────────────────── */
+
+.animate-fade-in {
+  animation: fadeIn 400ms ease-out both;
+}
+
+.animate-slide-in-left {
+  animation: slideInLeft 500ms ease-out both;
+}
+
+.animate-fade-up {
+  animation: fadeUp 400ms ease-out both;
+}
+
+.animate-pulse-glow {
+  animation: pulseGlow 2s ease-in-out infinite;
+}
+
+.animate-slide-down {
+  animation: slideDown 300ms ease-out both;
+}
+
+.comment-exit {
+  animation: commentExit 200ms ease-out forwards;
+  overflow: hidden;
+}
+
+/* ── Component classes ─────────────────────────────────── */
 
 @layer components {
   .btn-primary {
-    @apply bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-2 px-4 rounded-md transition-colors;
+    font-weight: 500;
+    padding: 0.5rem 1rem;
+    border-radius: 0.375rem;
+    color: #ffffff;
+    background: linear-gradient(135deg, #E040FB, #F50057);
+    transition: transform 150ms ease, box-shadow 150ms ease;
+    display: inline-flex;
+    align-items: center;
   }
+  .btn-primary:hover {
+    transform: scale(1.02);
+    box-shadow: 0 0 20px rgba(224, 64, 251, 0.5);
+  }
+
   .btn-secondary {
-    @apply bg-slate-800 hover:bg-slate-700 text-white font-medium py-2 px-4 rounded-md border border-slate-700 transition-colors;
+    font-weight: 500;
+    padding: 0.5rem 1rem;
+    border-radius: 0.375rem;
+    color: #E040FB;
+    background: #13111A;
+    border: 1px solid rgba(224, 64, 251, 0.3);
+    transition: background 150ms ease;
   }
+  .btn-secondary:hover {
+    background: rgba(224, 64, 251, 0.1);
+  }
+
   .btn-ghost {
-    @apply text-slate-400 hover:text-white font-medium py-2 px-4 rounded-md transition-colors;
+    font-weight: 500;
+    padding: 0.5rem 1rem;
+    border-radius: 0.375rem;
+    color: #A0A0B8;
+    border: 1px solid transparent;
+    transition: color 150ms ease, border-color 150ms ease, background 150ms ease;
   }
+  .btn-ghost:hover {
+    color: #F50057;
+    border-color: rgba(245, 0, 87, 0.3);
+    background: rgba(245, 0, 87, 0.05);
+  }
+
   .card {
-    @apply bg-slate-900 border border-slate-800 rounded-xl p-6;
+    border-radius: 0.75rem;
+    padding: 1.5rem;
+    background: #13111A;
+    border: 1px solid rgba(224, 64, 251, 0.15);
+    transition: border-color 200ms ease, transform 200ms ease, box-shadow 200ms ease;
   }
+
   .input {
-    @apply w-full bg-slate-900 border border-slate-700 rounded-md px-4 py-2 text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all;
+    width: 100%;
+    background: #13111A;
+    border: 1px solid rgba(224, 64, 251, 0.2);
+    border-radius: 0.375rem;
+    padding: 0.5rem 1rem;
+    color: #ffffff;
+    transition: border-color 150ms ease, box-shadow 150ms ease;
   }
+  .input::placeholder {
+    color: #A0A0B8;
+  }
+  .input:focus {
+    outline: none;
+    border-color: #F50057;
+    box-shadow: 0 0 0 2px rgba(245, 0, 87, 0.25);
+  }
+
   .label {
-    @apply block text-sm font-medium text-slate-300 mb-1.5;
+    display: block;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: #A0A0B8;
+    margin-bottom: 0.375rem;
   }
+
   .section-chip {
-    @apply text-xs font-bold uppercase tracking-widest text-indigo-400 bg-indigo-500/10 px-3 py-1 rounded-full border border-indigo-500/20;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    padding: 0.25rem 0.75rem;
+    border-radius: 9999px;
+    border: 1px solid rgba(224, 64, 251, 0.3);
+    background: linear-gradient(135deg, #E040FB 0%, #F50057 50%, #E040FB 100%);
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    color: transparent;
+    animation: shimmer 3s linear infinite;
+  }
+
+  /* Loading skeleton */
+  .skeleton {
+    border-radius: 0.375rem;
+    background: linear-gradient(90deg, #1A1525 25%, #2A1D3D 50%, #1A1525 75%);
+    background-size: 400px 100%;
+    animation: skeletonShimmer 1.5s ease-in-out infinite;
   }
 }
