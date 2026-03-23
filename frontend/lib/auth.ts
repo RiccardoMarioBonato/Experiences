@@ -30,7 +30,11 @@ export const getRole = () => {
 
 export const getName = () => {
   if (typeof window === "undefined") return null;
-  return localStorage.getItem("name");
+  const fromStorage = localStorage.getItem("name");
+  if (fromStorage) return fromStorage;
+  // Fallback: read from cookie (name is URL-encoded)
+  const match = document.cookie.match(/(?:^|;\s*)name=([^;]*)/);
+  return match ? decodeURIComponent(match[1]) : null;
 };
 
 export const isAuthenticated = () => {

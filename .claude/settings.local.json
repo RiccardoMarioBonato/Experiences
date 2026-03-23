@@ -1,0 +1,7 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(find /c/Users/dream/Desktop/RickFolio -not -path */node_modules* -type d)"
+    ]
+  }
+}

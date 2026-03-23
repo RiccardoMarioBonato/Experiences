@@ -22,6 +22,7 @@ class User(Base):
     full_name = Column(String(255), nullable=True)
     role_id = Column(Integer, ForeignKey("roles.id"), nullable=False)
     created_at = Column(DateTime, default=lambda: datetime.now(timezone.utc))
+    google_id = Column(String(255), unique=True, nullable=True, index=True)
 
     role = relationship("Role", back_populates="users")
     comments = relationship("Comment", back_populates="author", cascade="all, delete-orphan")
