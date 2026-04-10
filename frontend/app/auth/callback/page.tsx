@@ -29,7 +29,7 @@ function CallbackInner() {
 
     // Small delay to ensure cookies are written before navigation
     setTimeout(() => {
-      router.replace(role === "admin" ? "/admin" : "/recruiter");
+      router.replace("/");
     }, 100);
   }, [params, router]);
 

@@ -31,9 +31,7 @@ export default function LoginPage() {
       const { access_token, role, full_name } = res.data;
       saveAuth(access_token, role, full_name);
 
-      if (role === "admin") router.push("/admin");
-      else if (role === "recruiter") router.push("/recruiter");
-      else router.push("/");
+      router.push("/");
     } catch {
       setError(content.login.errorMessages.invalidCredentials);
     } finally {

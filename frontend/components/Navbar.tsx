@@ -73,6 +73,7 @@ export default function Navbar() {
         <div className="hidden md:flex items-center gap-6">
           {navLink("/", "Resume")}
           {navLink("/about", "About Me")}
+          {navLink("/videos", "Videos")}
 
           {isAuth ? (
             <>
@@ -132,6 +133,15 @@ export default function Navbar() {
             }`}
           >
             About Me
+          </Link>
+          <Link
+            href="/videos"
+            onClick={() => setIsOpen(false)}
+            className={`block text-sm font-medium transition-colors ${
+              pathname === "/videos" ? "text-[#F50057]" : "text-[#A0A0B8]"
+            }`}
+          >
+            Videos
           </Link>
           {isAuth ? (
             <>

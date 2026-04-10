@@ -2,38 +2,44 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { Github, Linkedin, Mail, MapPin, Calendar, Code2, Briefcase } from "lucide-react";
+import { Github, Linkedin, Mail, MapPin, Calendar, Code2, Briefcase, Video } from "lucide-react";
 import content from "@/content.json";
 
 const { site } = content;
 
-const skills = [
-  "TypeScript", "React", "Next.js", "Node.js",
-  "Python", "FastAPI", "PostgreSQL", "Docker",
-  "Git", "REST APIs", "Tailwind CSS", "AWS",
+const skillGroups = [
+  {
+    label: "Programming",
+    skills: ["JavaScript", "TypeScript", "Python", "C++", "C#", "Go", "Kotlin", "React"],
+  },
+  {
+    label: "Backend / DevOps",
+    skills: ["PostgreSQL", "REST API Design", "Django", "SQLite", "MySQL", "Docker"],
+  },
+  {
+    label: "Work Tools",
+    skills: ["GitHub", "Photoshop", "Jira", "Vegas Pro", "Clip Studio", "Blender", "Aseprite"],
+  },
+  {
+    label: "Game Engines",
+    skills: ["Godot", "Pygame", "Unreal Engine", "Unity"],
+  },
 ];
 
 const timeline = [
   {
-    year: "2024 – Present",
-    title: "Full-Stack Developer",
-    place: "Freelance / Open to Opportunities",
+    year: "Jun 2023 – Present",
+    title: "IT / Tech Support",
+    place: "Guru Electronics · Bangkok, Thailand",
     description:
-      "Building production-grade web applications end-to-end — from database design to pixel-perfect UIs.",
+      "Software & hardware support, customer sales assistance, and initial web development setup for clients. Media editing with Vegas Pro, Photoshop, and Blender. Trilingual: Thai (Native), English (Master), Italian (Native).",
   },
   {
-    year: "2023",
-    title: "Bachelor's in Computer Science",
-    place: "University — [Placeholder]",
+    year: "Oct 2021 – Oct 2027",
+    title: "Bachelor's in Software and Knowledge Engineering",
+    place: "Kasetsart University · Bangkok, Thailand",
     description:
-      "Focused on software engineering, algorithms, and distributed systems. Graduated with honours.",
-  },
-  {
-    year: "2022",
-    title: "Software Engineering Intern",
-    place: "Company — [Placeholder]",
-    description:
-      "Contributed to a microservices migration and built internal tooling that reduced deploy times by 40%.",
+      "Studying software engineering with a focus on full-stack development, game development, and applied AI. Expected graduation Oct 2027.",
   },
 ];
 
@@ -255,19 +261,28 @@ export default function AboutPage() {
           <span className="section-chip">skills &amp; tools</span>
         </div>
 
-        <div className="flex flex-wrap gap-3">
-          {skills.map((skill) => (
-            <span
-              key={skill}
-              className="px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 hover:scale-105 cursor-default"
-              style={{
-                background: "rgba(224, 64, 251, 0.07)",
-                border: "1px solid rgba(224, 64, 251, 0.25)",
-                color: "#A0A0B8",
-              }}
-            >
-              {skill}
-            </span>
+        <div className="space-y-5">
+          {skillGroups.map((group) => (
+            <div key={group.label}>
+              <p className="text-xs font-semibold uppercase tracking-widest mb-2" style={{ color: "#E040FB" }}>
+                {group.label}
+              </p>
+              <div className="flex flex-wrap gap-2">
+                {group.skills.map((skill) => (
+                  <span
+                    key={skill}
+                    className="px-3 py-1.5 rounded-full text-sm font-medium transition-all duration-200 hover:scale-105 cursor-default"
+                    style={{
+                      background: "rgba(224, 64, 251, 0.07)",
+                      border: "1px solid rgba(224, 64, 251, 0.25)",
+                      color: "#A0A0B8",
+                    }}
+                  >
+                    {skill}
+                  </span>
+                ))}
+              </div>
+            </div>
           ))}
         </div>
       </section>
@@ -317,6 +332,9 @@ export default function AboutPage() {
           <a href={`mailto:${site.email}`} className="btn-primary flex items-center gap-2">
             <Mail size={16} /> Get in Touch
           </a>
+          <Link href="/videos" className="btn-ghost flex items-center gap-2">
+            <Video size={15} /> Watch My Work
+          </Link>
           <Link href="/" className="btn-ghost">
             View Resume →
           </Link>
