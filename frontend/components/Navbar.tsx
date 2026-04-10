@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { useRouter, usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { isAuthenticated, getRole, getName, clearAuth } from "@/lib/auth";
@@ -60,14 +61,18 @@ export default function Navbar() {
       <div className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
         <Link
           href="/"
-          className="font-bold text-lg tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-[#E040FB] to-[#F50057]"
+          className="flex items-center gap-2 font-bold text-lg tracking-tight"
         >
-          {content.site.name}
+          <Image src="/photos/logo-new.jpg" alt="RickFolio logo" width={36} height={36} className="rounded-full" />
+          <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#E040FB] to-[#F50057]">
+            {content.site.name}
+          </span>
         </Link>
 
         {/* Desktop */}
         <div className="hidden md:flex items-center gap-6">
           {navLink("/", "Resume")}
+          {navLink("/about", "About Me")}
 
           {isAuth ? (
             <>
@@ -118,6 +123,15 @@ export default function Navbar() {
             }`}
           >
             Resume
+          </Link>
+          <Link
+            href="/about"
+            onClick={() => setIsOpen(false)}
+            className={`block text-sm font-medium transition-colors ${
+              pathname === "/about" ? "text-[#F50057]" : "text-[#A0A0B8]"
+            }`}
+          >
+            About Me
           </Link>
           {isAuth ? (
             <>
