@@ -10,11 +10,11 @@ const { site } = content;
 const skillGroups = [
   {
     label: "Programming",
-    skills: ["JavaScript", "TypeScript", "Python", "C++", "C#", "Go", "Kotlin", "React"],
+    skills: ["JavaScript", "TypeScript", "Python", "C++", "C#", "Go", "Kotlin", "React", "Next.js", "Node.js", "Tailwind CSS"],
   },
   {
     label: "Backend / DevOps",
-    skills: ["PostgreSQL", "REST API Design", "Django", "SQLite", "MySQL", "Docker"],
+    skills: ["PostgreSQL", "REST API Design", "Django", "FastAPI", "SQLite", "MySQL", "Docker", "Git", "AWS"],
   },
   {
     label: "Work Tools",

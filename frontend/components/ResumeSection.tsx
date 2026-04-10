@@ -1,4 +1,5 @@
-import { ChevronDown, ChevronRight, Briefcase, GraduationCap, Code, FolderOpen, User } from "lucide-react";
+import Link from "next/link";
+import { ChevronDown, ChevronRight, Briefcase, GraduationCap, Code, FolderOpen, User, Play } from "lucide-react";
 import { useState } from "react";
 
 const getIcon = (type: string) => {
@@ -17,10 +18,12 @@ export default function ResumeSectionCard({
   section,
   children,
   index = 0,
+  videoLink,
 }: {
   section: any;
   children?: React.ReactNode;
   index?: number;
+  videoLink?: string;
 }) {
   const [isOpen, setIsOpen] = useState(false);
 
@@ -50,7 +53,23 @@ export default function ResumeSectionCard({
         </div>
 
         <div className="flex-1 min-w-0">
-          <h3 className="text-xl font-bold text-white mb-1">{section.title}</h3>
+          <div className="flex items-center gap-3 mb-1">
+            <h3 className="text-xl font-bold text-white">{section.title}</h3>
+            {videoLink && (
+              <Link
+                href={videoLink}
+                onClick={(e) => e.stopPropagation()}
+                className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium transition-all hover:scale-105"
+                style={{
+                  background: "rgba(245, 0, 87, 0.12)",
+                  border: "1px solid rgba(245, 0, 87, 0.35)",
+                  color: "#F50057",
+                }}
+              >
+                <Play size={10} fill="#F50057" /> Video
+              </Link>
+            )}
+          </div>
 
           <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-sm">
             {section.subtitle && (

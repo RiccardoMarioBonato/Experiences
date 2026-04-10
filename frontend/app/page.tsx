@@ -33,6 +33,13 @@ interface Comment {
 
 const SECTION_ORDER = ["about", "experience", "education", "projects", "skills"];
 
+// Project titles (from seed) that have a demo on the /videos page
+const PROJECTS_WITH_VIDEO = new Set([
+  "Fruits Anomaly Detector",
+  "SleepEfficiencyPrediction",
+  "UniPlus",
+]);
+
 export default function HomePage() {
   const [sections, setSections] = useState<ResumeSection[]>([]);
   const [comments, setComments] = useState<Record<number, Comment[]>>({});
@@ -340,7 +347,16 @@ export default function HomePage() {
 
                 <div className="space-y-4">
                   {items.map((section, i) => (
-                    <ResumeSectionCard key={section.id} section={section} index={i}>
+                    <ResumeSectionCard
+                      key={section.id}
+                      section={section}
+                      index={i}
+                      videoLink={
+                        section.section_type === "projects" && PROJECTS_WITH_VIDEO.has(section.title)
+                          ? "/videos"
+                          : undefined
+                      }
+                    >
                       <CommentPanel
                         sectionId={section.id}
                         initialComments={comments[section.id] ?? []}
