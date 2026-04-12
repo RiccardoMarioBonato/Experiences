@@ -3,10 +3,9 @@ from fastapi.responses import RedirectResponse
 from sqlalchemy.orm import Session
 from schemas.user import UserCreate, UserLogin, UserOut
 from schemas.token import Token
-from services.user import create_user, authenticate_user, get_user_by_email
+from services.user import create_user, authenticate_user, get_user_by_email, get_or_create_google_user
 from services.auth import create_access_token
 from dependencies import get_db
-from models.user import User, Role
 import os
 import httpx
 
@@ -94,32 +93,10 @@ def google_callback(code: str, db: Session = Depends(get_db)):
     email = userinfo.get("email")
     full_name = userinfo.get("name", "")
 
-    # Check if user exists by google_id
-    user = db.query(User).filter(User.google_id == google_id).first()
-
-    if not user:
-        # Check if user exists by email
-        user = get_user_by_email(db, email)
-        if user:
-            # Link google_id to existing account
-            user.google_id = google_id
-            db.commit()
-            db.refresh(user)
-        else:
-            # Create new recruiter account
-            role = db.query(Role).filter(Role.name == "recruiter").first()
-            if not role:
-                raise HTTPException(status_code=500, detail="Recruiter role not found")
-            user = User(
-                email=email,
-                hashed_password="",
-                full_name=full_name,
-                role_id=role.id,
-                google_id=google_id,
-            )
-            db.add(user)
-            db.commit()
-            db.refresh(user)
+    try:
+        user = get_or_create_google_user(db, google_id, email, full_name)
+    except ValueError as exc:
+        raise HTTPException(status_code=500, detail=str(exc))
 
     jwt_token = create_access_token({"sub": str(user.id), "role": user.role.name})
     name_param = (user.full_name or "").replace(" ", "%20")
