@@ -88,9 +88,9 @@ SECTIONS = [
     {
         "section_type": "projects",
         "title": "Maze Escape",
-        "subtitle": "Unreal Engine 4 (C++, Blueprints)",
-        "description": "3D horror maze puzzle built with UE4 as a functional demo.",
-        "start_date": None,
+        "subtitle": "C++, Unreal Engine 4",
+        "description": "A 3D horror maze puzzle built with UE4, functioning as a fully playable demo with puzzle mechanics and atmospheric design.",
+        "start_date": "August 2021",
         "end_date": None,
         "order": 3,
     },
@@ -178,6 +178,64 @@ SECTIONS = [
 ]
 
 
+NEW_PROJECTS = [
+    {
+        "section_type": "projects",
+        "title": "Tactical Hero Battle Game",
+        "subtitle": "Python, OOP",
+        "description": (
+            "A 2D side-scrolling tactical strategy game built with Python combining tower defense mechanics "
+            "inspired by Line Ranger and Battle Cats, designed with OOP principles."
+        ),
+        "start_date": "May 2025",
+        "end_date": None,
+        "order": 5,
+    },
+    {
+        "section_type": "projects",
+        "title": "Chess Haven",
+        "subtitle": "Shopify, E-Commerce",
+        "description": (
+            "A fully functional e-commerce store on Shopify for selling custom chess sets, implementing "
+            "custom product catalogs, payment processing, and inventory management."
+        ),
+        "start_date": "January 2023",
+        "end_date": None,
+        "order": 6,
+    },
+    {
+        "section_type": "projects",
+        "title": "Cotour Jerdan",
+        "subtitle": "Shopify, E-Commerce",
+        "description": (
+            "A fully functional e-commerce store on Shopify for selling luxury furniture, implementing "
+            "custom product catalogs, payment processing, and inventory management."
+        ),
+        "start_date": "November 2024",
+        "end_date": None,
+        "order": 7,
+    },
+    {
+        "section_type": "projects",
+        "title": "Maze Escape",
+        "subtitle": "C++, Unreal Engine 4",
+        "description": "A 3D horror maze puzzle built with UE4, functioning as a fully playable demo with puzzle mechanics and atmospheric design.",
+        "start_date": "August 2021",
+        "end_date": None,
+        "order": 3,
+    },
+    {
+        "section_type": "projects",
+        "title": "MoleDiver",
+        "subtitle": "Kotlin, Android",
+        "description": "A mobile game developed as a university course project built with Kotlin for Android.",
+        "start_date": "April 2026",
+        "end_date": None,
+        "order": 8,
+    },
+]
+
+
 def seed():
     Base.metadata.create_all(bind=engine)
     db = SessionLocal()
@@ -216,6 +274,19 @@ def seed():
             print(f"✅ Seeded {len(SECTIONS)} resume sections")
         else:
             print(f"ℹ️  Resume sections already exist ({existing_count} found), skipping")
+
+        # Seed new projects (idempotent: insert only if title not already present)
+        added = 0
+        for p in NEW_PROJECTS:
+            exists = db.query(ResumeSection).filter(ResumeSection.title == p["title"]).first()
+            if not exists:
+                db.add(ResumeSection(**p))
+                added += 1
+        if added:
+            db.commit()
+            print(f"✅ Added {added} new project(s)")
+        else:
+            print("ℹ️  All new projects already present, skipping")
 
     finally:
         db.close()
