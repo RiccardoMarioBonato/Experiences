@@ -140,7 +140,35 @@ export default function LoginPage() {
           </button>
         </form>
 
-        <div className="mt-8 text-center space-y-4">
+        {/* ADDED — Browse as Guest section */}
+        <div className="mt-6 text-center">
+          <p className="text-[#A0A0B8] text-xs mb-3">
+            Just want to look around? No account needed.
+          </p>
+          <button
+            type="button"
+            onClick={() => router.push("/")}
+            className="w-full py-3 rounded-lg font-medium text-sm transition-all"
+            style={{
+              background: "transparent",
+              border: "1px solid rgba(224, 64, 251, 0.3)",
+              color: "#E040FB",
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.borderColor = "#E040FB";
+              e.currentTarget.style.background = "rgba(224, 64, 251, 0.08)";
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.borderColor = "rgba(224, 64, 251, 0.3)";
+              e.currentTarget.style.background = "transparent";
+            }}
+          >
+            Browse as Guest →
+          </button>
+        </div>
+        {/* END ADDED */}
+
+        <div className="mt-6 text-center space-y-4">
           <p className="text-[#A0A0B8] text-sm">
             {content.login.noAccountText}{" "}
             <Link
@@ -150,12 +178,6 @@ export default function LoginPage() {
               {content.login.registerLink}
             </Link>
           </p>
-          <Link
-            href="/"
-            className="inline-block text-[#A0A0B8] hover:text-white text-sm transition-colors"
-          >
-            {content.login.guestLinkText}
-          </Link>
         </div>
       </div>
     </div>
