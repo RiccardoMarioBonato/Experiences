@@ -3,7 +3,8 @@
     "allow": [
       "Bash(find /c/Users/dream/Desktop/RickFolio -not -path */node_modules* -type d)",
       "Bash(npx tsc:*)",
-      "Bash(npx next:*)"
+      "Bash(npx next:*)",
+      "Bash(git:*)"
     ]
   }
 }
