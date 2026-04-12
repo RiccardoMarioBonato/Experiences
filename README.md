@@ -204,6 +204,25 @@ docker-compose exec db psql -U postgres -d rickfolio
 | API Docs | `http://localhost:8000/docs` | No |
 
 ---
+## Screenshots
+
+### Public Portfolio View (Guest)
+![Guest view of the public portfolio page](screenshots/guest-portfolio.png)
+> The live resume page showing sections, project cards, and video badges — no login required.
+
+### Login Page
+![Login page with email and password fields](screenshots/login.png)
+> Recruiters and admins sign in here; guests can bypass via the "View without signing in" link.
+
+### Admin Dashboard
+![Admin dashboard with resume sections, recruiter activity, and user management tabs](screenshots/admin-dashboard.png)
+> Full CRUD over resume sections, view of recruiter comments, and user management in one place.
+
+### Recruiter Comment View
+![Recruiter view with expandable sections and comment threads](screenshots/recruiter-comments.png)
+> Authenticated recruiters can expand any section and leave, edit, or delete feedback inline.
+
+---
 ## Author
 
 **Riccardo M. Bonato**  
