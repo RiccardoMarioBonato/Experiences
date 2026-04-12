@@ -79,7 +79,7 @@ export default function AboutPage() {
               height={360}
               priority
               className="relative rounded-2xl object-cover z-10"
-              style={{ objectFit: "cover", height: 360, width: 280 }}
+              style={{ objectFit: "cover", objectPosition: "top", height: 360, width: 280 }}
             />
           </div>
 
@@ -209,7 +209,7 @@ export default function AboutPage() {
               width={400}
               height={480}
               className="w-full h-64 object-cover transition-transform duration-300 group-hover:scale-105 rounded-xl"
-              style={{ objectFit: "cover" }}
+              style={{ objectFit: "cover", objectPosition: "top" }}
             />
             <span className="absolute bottom-3 left-3 z-20 text-xs text-[#A0A0B8] bg-[#0D0D0F]/70 px-2 py-1 rounded-md">
               Professional
