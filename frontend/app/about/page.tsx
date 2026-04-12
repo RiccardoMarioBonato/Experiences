@@ -1,9 +1,11 @@
 "use client";
 
+import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { Github, Linkedin, Mail, MapPin, Calendar, Code2, Briefcase, Video } from "lucide-react";
 import content from "@/content.json";
+import ContactModal from "@/components/ContactModal";
 
 const { site } = content;
 
@@ -44,6 +46,8 @@ const timeline = [
 ];
 
 export default function AboutPage() {
+  const [isContactOpen, setIsContactOpen] = useState(false);
+
   return (
     <div className="min-h-screen bg-[#0D0D0F] text-white overflow-x-hidden">
 
@@ -172,12 +176,12 @@ export default function AboutPage() {
                   <Linkedin size={18} /> LinkedIn
                 </a>
               )}
-              <a
-                href={`mailto:${site.email}`}
+              <button
+                onClick={() => setIsContactOpen(true)}
                 className="flex items-center gap-2 text-sm text-[#A0A0B8] hover:text-[#E040FB] transition-colors"
               >
                 <Mail size={18} /> Email
-              </a>
+              </button>
             </div>
           </div>
         </div>
@@ -321,6 +325,8 @@ export default function AboutPage() {
         </div>
       </section>
 
+      <ContactModal isOpen={isContactOpen} onClose={() => setIsContactOpen(false)} />
+
       {/* ── CTA ────────────────────────────────────────────── */}
       <section className="max-w-5xl mx-auto px-6 py-16 text-center">
         <h2 className="text-3xl font-bold mb-3">Want to work together?</h2>
@@ -329,9 +335,9 @@ export default function AboutPage() {
           Drop me a line and let&apos;s build something great.
         </p>
         <div className="flex items-center justify-center gap-4 flex-wrap">
-          <a href={`mailto:${site.email}`} className="btn-primary flex items-center gap-2">
+          <button onClick={() => setIsContactOpen(true)} className="btn-primary flex items-center gap-2">
             <Mail size={16} /> Get in Touch
-          </a>
+          </button>
           <Link href="/videos" className="btn-ghost flex items-center gap-2">
             <Video size={15} /> Watch My Work
           </Link>
