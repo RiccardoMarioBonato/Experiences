@@ -8,6 +8,7 @@ import CommentPanel from "@/components/CommentPanel";
 import api from "@/lib/api";
 import content from "@/content.json";
 import { Download, Github, Linkedin, Mail, ChevronDown } from "lucide-react";
+import ContactModal from "@/components/ContactModal";
 
 const { site, resume: copy } = content;
 
@@ -44,6 +45,7 @@ export default function HomePage() {
   const [sections, setSections] = useState<ResumeSection[]>([]);
   const [comments, setComments] = useState<Record<number, Comment[]>>({});
   const [loading, setLoading] = useState(true);
+  const [isContactOpen, setIsContactOpen] = useState(false);
   const resumeRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -158,13 +160,13 @@ export default function HomePage() {
                 <ChevronDown size={16} />
               </button>
 
-              <a
-                href={`mailto:${site.email}`}
+              <button
+                onClick={() => setIsContactOpen(true)}
                 className="btn-ghost flex items-center gap-2"
               >
                 <Mail size={16} />
                 {copy.contact.buttonText}
-              </a>
+              </button>
             </div>
 
             {/* Social links */}
@@ -369,6 +371,8 @@ export default function HomePage() {
           </div>
         )}
       </section>
+
+      <ContactModal isOpen={isContactOpen} onClose={() => setIsContactOpen(false)} />
 
       {/* ── FOOTER ───────────────────────────────────────── */}
       <footer
