@@ -39,10 +39,12 @@ const PROJECTS_WITH_VIDEO = new Set([
   "Fruits Anomaly Detector",
   "SleepEfficiencyPrediction",
   "UniPlus",
+  "Tactical Hero Battle Game",
+  "MoleDiver",
 ]);
 
 export default function HomePage() {
-  const [sections, setSections] = useState<ResumeSection[]>([]);
+  const [grouped, setGrouped] = useState<Record<string, ResumeSection[]>>({});
   const [comments, setComments] = useState<Record<number, Comment[]>>({});
   const [loading, setLoading] = useState(true);
   const [isContactOpen, setIsContactOpen] = useState(false);
@@ -51,11 +53,12 @@ export default function HomePage() {
   useEffect(() => {
     const load = async () => {
       try {
-        const res = await api.get<ResumeSection[]>("/resume/");
-        setSections(res.data);
+        const res = await api.get<Record<string, ResumeSection[]>>("/resume/");
+        setGrouped(res.data);
 
+        const allSections = Object.values(res.data).flat();
         const entries = await Promise.all(
-          res.data.map(async (s) => {
+          allSections.map(async (s) => {
             const c = await api.get<Comment[]>(`/comments/${s.id}`);
             return [s.id, c.data] as [number, Comment[]];
           })
@@ -70,19 +73,11 @@ export default function HomePage() {
     load();
   }, []);
 
-  const grouped = SECTION_ORDER.reduce<Record<string, ResumeSection[]>>((acc, type) => {
-    const items = sections
-      .filter((s) => s.section_type === type)
-      .sort((a, b) => a.order - b.order);
-    if (items.length > 0) acc[type] = items;
-    return acc;
-  }, {});
-
   return (
-    <div className="min-h-screen bg-[#0D0D0F] text-white animate-fade-in overflow-x-hidden">
+    <div className="min-h-screen bg-[#0D0D0F] text-white overflow-x-hidden">
 
       {/* ── HERO ─────────────────────────────────────────── */}
-      <section className="relative min-h-[90vh] px-6 overflow-hidden">
+      <section className="relative min-h-[90vh] px-6 overflow-hidden animate-fade-in">
         {/* Ambient background glows */}
         <div className="absolute inset-0 pointer-events-none">
           <div
@@ -307,13 +302,14 @@ export default function HomePage() {
             <h2 className="text-xl font-bold text-white">Resume</h2>
             <p className="text-[#A0A0B8] text-sm mt-0.5">Live content — updated in real time</p>
           </div>
-          <button
-            onClick={() => window.print()}
+          <a
+            href="/photos/Riccardo_Resume.pdf"
+            download="Riccardo_Resume.pdf"
             className="btn-ghost flex items-center gap-2 text-sm"
           >
             <Download size={15} />
             {copy.hero.downloadButton}
-          </button>
+          </a>
         </div>
 
         {loading ? (
@@ -326,7 +322,7 @@ export default function HomePage() {
               </div>
             ))}
           </div>
-        ) : sections.length === 0 ? (
+        ) : Object.keys(grouped).length === 0 ? (
           <div className="text-center py-24">
             <p className="text-[#A0A0B8] text-sm">No resume content available yet.</p>
             <Link
@@ -338,7 +334,7 @@ export default function HomePage() {
           </div>
         ) : (
           <div className="space-y-12">
-            {Object.entries(grouped).map(([type, items]) => (
+            {SECTION_ORDER.filter((type) => grouped[type]?.length > 0).map((type) => (
               <div key={type}>
                 {/* Section type heading */}
                 <div className="flex items-center gap-3 mb-5">
@@ -348,7 +344,7 @@ export default function HomePage() {
                 </div>
 
                 <div className="space-y-4">
-                  {items.map((section, i) => (
+                  {grouped[type].map((section, i) => (
                     <ResumeSectionCard
                       key={section.id}
                       section={section}

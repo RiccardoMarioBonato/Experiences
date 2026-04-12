@@ -58,11 +58,11 @@ export default function AdminPage() {
     const load = async () => {
       try {
         const [secRes, userRes, comRes] = await Promise.all([
-          api.get("/resume/"),
+          api.get<Record<string, ResumeSection[]>>("/resume/"),
           api.get("/admin/users"),
           api.get("/admin/comments"),
         ]);
-        setSections(secRes.data);
+        setSections(Object.values(secRes.data).flat());
         setUsers(userRes.data);
         setComments(comRes.data);
       } catch (err) {

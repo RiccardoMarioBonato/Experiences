@@ -9,7 +9,7 @@ router = APIRouter(prefix="/resume", tags=["resume"])
 admin_guard = require_role("admin")
 
 
-@router.get("/", response_model=list[ResumeSectionOut])
+@router.get("/", response_model=dict[str, list[ResumeSectionOut]])
 def list_sections(db: Session = Depends(get_db)):
     """Public endpoint — no auth required."""
     return resume_service.get_all_sections(db)

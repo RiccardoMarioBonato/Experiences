@@ -4,8 +4,29 @@ from schemas.comment import CommentCreate, CommentUpdate
 from datetime import datetime, timezone
 
 
-def get_comments_for_section(db: Session, section_id: int) -> list[Comment]:
-    return db.query(Comment).filter(Comment.section_id == section_id).all()
+def get_comments_for_section(db: Session, section_id: int) -> list[dict]:
+    comments = (
+        db.query(Comment)
+        .filter(Comment.section_id == section_id)
+        .order_by(Comment.created_at)
+        .all()
+    )
+    result = []
+    for c in comments:
+        result.append({
+            "id": c.id,
+            "content": c.content,
+            "section_id": c.section_id,
+            "author": {
+                "id": c.author.id,
+                "full_name": c.author.full_name,
+                "email": c.author.email,
+            },
+            "author_display": c.author.full_name or c.author.email,
+            "created_at": c.created_at,
+            "updated_at": c.updated_at,
+        })
+    return result
 
 
 def get_all_comments(db: Session) -> list[Comment]:

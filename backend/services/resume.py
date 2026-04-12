@@ -4,8 +4,18 @@ from schemas.resume import ResumeSectionCreate, ResumeSectionUpdate
 from datetime import datetime, timezone
 
 
-def get_all_sections(db: Session) -> list[ResumeSection]:
-    return db.query(ResumeSection).order_by(ResumeSection.section_type, ResumeSection.order).all()
+def get_all_sections(db: Session) -> dict[str, list[ResumeSection]]:
+    sections = (
+        db.query(ResumeSection)
+        .filter(ResumeSection.title != None, ResumeSection.title != "")  # noqa: E711
+        .order_by(ResumeSection.order)
+        .all()
+    )
+    grouped: dict[str, list[ResumeSection]] = {}
+    for section in sections:
+        key = section.section_type.value
+        grouped.setdefault(key, []).append(section)
+    return grouped
 
 
 def get_section(db: Session, section_id: int) -> ResumeSection | None:

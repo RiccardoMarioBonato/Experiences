@@ -10,7 +10,7 @@ router = APIRouter(prefix="/comments", tags=["comments"])
 recruiter_guard = require_role("recruiter", "admin")
 
 
-@router.get("/{section_id}", response_model=list[CommentOut])
+@router.get("/{section_id}")
 def list_comments(section_id: int, db: Session = Depends(get_db)):
     """Public — anyone can read comments."""
     return comment_service.get_comments_for_section(db, section_id)

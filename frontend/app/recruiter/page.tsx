@@ -52,12 +52,13 @@ export default function RecruiterPage() {
   useEffect(() => {
     const load = async () => {
       try {
-        const res = await api.get("/resume/");
-        setSections(res.data);
+        const res = await api.get<Record<string, ResumeSection[]>>("/resume/");
+        const allSections = Object.values(res.data).flat();
+        setSections(allSections);
 
         const commentMap: Record<number, Comment[]> = {};
         await Promise.all(
-          res.data.map(async (s: ResumeSection) => {
+          allSections.map(async (s: ResumeSection) => {
             const c = await api.get(`/comments/${s.id}`);
             commentMap[s.id] = c.data;
           })
