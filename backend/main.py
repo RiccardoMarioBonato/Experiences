@@ -9,6 +9,7 @@ from database import engine, Base
 import models  # noqa: ensure all models are registered with Base
 
 from routers import auth, resume, comments, admin
+from routers.contact import router as contact_router
 
 # Create all tables (Alembic handles migrations; this is a fallback for dev)
 Base.metadata.create_all(bind=engine)
@@ -36,6 +37,7 @@ app.include_router(auth.router)
 app.include_router(resume.router)
 app.include_router(comments.router)
 app.include_router(admin.router)
+app.include_router(contact_router, prefix="/contact", tags=["contact"])
 
 
 @app.get("/health", tags=["health"])
