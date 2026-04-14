@@ -21,6 +21,8 @@ interface ResumeSection {
   start_date: string | null;
   end_date: string | null;
   order: number;
+  has_video: boolean;
+  youtube_url: string | null;
 }
 
 interface Comment {
@@ -33,15 +35,6 @@ interface Comment {
 }
 
 const SECTION_ORDER = ["about", "experience", "education", "projects", "skills"];
-
-// Project titles (from seed) that have a demo on the /videos page
-const PROJECTS_WITH_VIDEO = new Set([
-  "Fruits Anomaly Detector",
-  "SleepEfficiencyPrediction",
-  "UniPlus",
-  "Tactical Hero Battle Game",
-  "MoleDiver",
-]);
 
 export default function HomePage() {
   const [grouped, setGrouped] = useState<Record<string, ResumeSection[]>>({});
@@ -195,50 +188,182 @@ export default function HomePage() {
           </div>
 
           {/* ── RIGHT COLUMN — 45% ── */}
-          {false && (
           <div className="w-full md:w-[45%] flex justify-center md:justify-end">
-            {/* Image container — fixed height, relative so badge & glows can anchor to it */}
-            <div
-              className="relative flex justify-center items-end"
-              style={{ height: 520, width: "100%", maxWidth: 420 }}
-            >
-              {/* Primary purple glow */}
-              <div
-                className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-[55%] w-80 h-80 rounded-full blur-3xl pointer-events-none"
-                style={{ background: "rgba(168, 85, 247, 0.25)" }}
-              />
-              {/* Secondary pink glow — offset down-right */}
-              <div
-                className="absolute top-[55%] left-[55%] w-48 h-48 rounded-full blur-2xl pointer-events-none"
-                style={{ background: "rgba(245, 0, 87, 0.20)" }}
-              />
+            <style>{`
+              @media (prefers-reduced-motion: no-preference) {
+                @keyframes cb-logo-pulse {
+                  0%,100% { box-shadow: 0 0 40px rgba(224,64,251,.5), 0 0 80px rgba(224,64,251,.2); }
+                  50%     { box-shadow: 0 0 62px rgba(224,64,251,.78), 0 0 110px rgba(224,64,251,.35), 0 0 0 2px rgba(224,64,251,.25); }
+                }
+                @keyframes cb-ring-rot {
+                  from { transform: translate(-50%,-50%) rotate(0deg);   }
+                  to   { transform: translate(-50%,-50%) rotate(360deg); }
+                }
+                @keyframes cb-da {
+                  0%,100% { opacity:.45; box-shadow:0 0 6px 2px rgba(224,64,251,.6); }
+                  50%     { opacity:1;   box-shadow:0 0 10px 4px rgba(224,64,251,.9); }
+                }
+                @keyframes cb-db {
+                  0%,100% { opacity:.45; box-shadow:0 0 6px 2px rgba(245,0,87,.6); }
+                  50%     { opacity:1;   box-shadow:0 0 10px 4px rgba(245,0,87,.9); }
+                }
+                @keyframes cb-pr { 0%{opacity:0;transform:translateX(0)}  20%{opacity:1} 80%{opacity:1} 100%{opacity:0;transform:translateX(80px)}  }
+                @keyframes cb-pl { 0%{opacity:0;transform:translateX(0)}  20%{opacity:1} 80%{opacity:1} 100%{opacity:0;transform:translateX(-70px)} }
+                @keyframes cb-pu { 0%{opacity:0;transform:translateY(0)}  20%{opacity:1} 80%{opacity:1} 100%{opacity:0;transform:translateY(-72px)} }
+                @keyframes cb-pd { 0%{opacity:0;transform:translateY(0)}  20%{opacity:1} 80%{opacity:1} 100%{opacity:0;transform:translateY(72px)}  }
+                .cb-logo { animation: cb-logo-pulse 3s ease-in-out infinite; }
+                .cb-ring { animation: cb-ring-rot 30s linear infinite; }
+                .cb-da   { animation: cb-da 2s ease-in-out infinite; }
+                .cb-db   { animation: cb-db 2s ease-in-out infinite; }
+                .cb-p0   { animation: cb-pr 2.4s ease-in-out infinite 0s;   }
+                .cb-p1   { animation: cb-pr 2.4s ease-in-out infinite .4s;  }
+                .cb-p2   { animation: cb-pu 2.4s ease-in-out infinite .8s;  }
+                .cb-p3   { animation: cb-pl 2.4s ease-in-out infinite 1.2s; }
+                .cb-p4   { animation: cb-pl 2.4s ease-in-out infinite 1.6s; }
+                .cb-p5   { animation: cb-pl 2.4s ease-in-out infinite 2.0s; }
+                .cb-p6   { animation: cb-pd 2.4s ease-in-out infinite 2.4s; }
+                .cb-p7   { animation: cb-pr 2.4s ease-in-out infinite 2.8s; }
+              }
+              @media (max-width: 640px) {
+                .cb-stage { transform: scale(0.67); transform-origin: center top; }
+              }
+            `}</style>
 
-              {/* Hero photo — transparent PNG, floats above glows */}
-              <Image
-                src="/hero.png"
-                alt="Riccardo M. Bonato — professional headshot, white tee, arms crossed"
-                width={400}
-                height={520}
-                priority
-                className="relative z-10 w-auto object-contain md:max-h-[520px] max-h-[320px]"
-                style={{ objectFit: "contain" }}
-              />
+            {/* 420×420 stage — all traces use absolute pixel coords */}
+            {/* Logo is 220×220 centered → edges at x:100,320  y:100,320  */}
+            <div className="cb-stage" style={{ position:"relative", width:420, height:420, flexShrink:0 }}>
 
-              {/* "Open to work" badge — bottom-left of container */}
-              <span
-                className="absolute bottom-4 left-4 z-20 inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-medium"
-                style={{
-                  background: "rgba(16, 185, 129, 0.10)",
-                  border: "1px solid rgba(16, 185, 129, 0.25)",
-                  color: "#4ade80",
-                }}
-              >
-                <span className="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse" />
-                Open to work
-              </span>
+              {/* ── Corner accent dots ── */}
+              <div className="cb-da" style={{position:"absolute",top:12,left:12,width:8,height:8,borderRadius:"50%",background:"#E040FB"}} />
+              <div className="cb-db" style={{position:"absolute",top:12,right:12,width:8,height:8,borderRadius:"50%",background:"#F50057",animationDelay:".5s"}} />
+              <div className="cb-db" style={{position:"absolute",bottom:12,left:12,width:8,height:8,borderRadius:"50%",background:"#F50057",animationDelay:"1s"}} />
+              <div className="cb-da" style={{position:"absolute",bottom:12,right:12,width:8,height:8,borderRadius:"50%",background:"#E040FB",animationDelay:"1.5s"}} />
+
+              {/* ── Outer rotating ring with 4 tick marks ── */}
+              <div className="cb-ring" style={{
+                position:"absolute",top:"50%",left:"50%",
+                width:388,height:388,marginLeft:-194,marginTop:-194,
+                borderRadius:"50%",border:"1px solid rgba(224,64,251,.2)",
+              }}>
+                {/* N tick */}
+                <div style={{position:"absolute",top:0,left:"50%",width:8,height:3,background:"rgba(224,64,251,.7)",transform:"translate(-50%,-1px)"}} />
+                {/* S tick */}
+                <div style={{position:"absolute",bottom:0,left:"50%",width:8,height:3,background:"rgba(224,64,251,.7)",transform:"translate(-50%,1px)"}} />
+                {/* W tick */}
+                <div style={{position:"absolute",top:"50%",left:0,width:3,height:8,background:"rgba(224,64,251,.7)",transform:"translate(-1px,-50%)"}} />
+                {/* E tick */}
+                <div style={{position:"absolute",top:"50%",right:0,width:3,height:8,background:"rgba(224,64,251,.7)",transform:"translate(1px,-50%)"}} />
+              </div>
+
+              {/* ── T1: Right  x 320→408, y 210 ── */}
+              <div style={{position:"absolute",top:209,left:320,width:88,height:2,background:"rgba(224,64,251,.3)"}}>
+                {/* mid node */}
+                <div style={{position:"absolute",left:32,top:-1,width:4,height:4,background:"rgba(224,64,251,.8)"}} />
+                {/* end node */}
+                <div style={{position:"absolute",right:-3,top:-2,width:6,height:6,background:"#E040FB",boxShadow:"0 0 6px 3px rgba(224,64,251,.8)"}} />
+                {/* pulse — starts at logo side (left:0), travels right */}
+                <div className="cb-p0" style={{position:"absolute",top:-2,left:0,width:6,height:6,borderRadius:"50%",background:"#fff",boxShadow:"0 0 6px 2px rgba(255,255,255,.9)"}} />
+              </div>
+
+              {/* ── T2: Top-right — H seg then V seg ── */}
+              {/* H: x 320→388, y 144 */}
+              <div style={{position:"absolute",top:144,left:320,width:68,height:2,background:"rgba(245,0,87,.3)"}}>
+                <div className="cb-p1" style={{position:"absolute",top:-2,left:0,width:6,height:6,borderRadius:"50%",background:"#F50057",boxShadow:"0 0 6px 2px rgba(245,0,87,.9)"}} />
+              </div>
+              {/* V: x 386, y 55→145 */}
+              <div style={{position:"absolute",top:55,left:385,width:2,height:90,background:"rgba(245,0,87,.3)"}}>
+                <div style={{position:"absolute",top:-3,left:-2,width:6,height:6,background:"#F50057",boxShadow:"0 0 6px 3px rgba(245,0,87,.8)"}} />
+              </div>
+              {/* corner node */}
+              <div style={{position:"absolute",top:141,left:383,width:5,height:5,background:"rgba(245,0,87,.9)",boxShadow:"0 0 4px rgba(245,0,87,.6)"}} />
+
+              {/* ── T3: Top  x 210, y 20→100 ── */}
+              <div style={{position:"absolute",top:20,left:209,width:2,height:80,background:"rgba(224,64,251,.3)"}}>
+                <div style={{position:"absolute",top:24,left:-1,width:4,height:4,background:"rgba(224,64,251,.8)"}} />
+                <div style={{position:"absolute",top:-3,left:-2,width:6,height:6,background:"#E040FB",boxShadow:"0 0 6px 3px rgba(224,64,251,.8)"}} />
+                {/* pulse — starts at logo side (bottom), travels up */}
+                <div className="cb-p2" style={{position:"absolute",bottom:0,left:-2,width:6,height:6,borderRadius:"50%",background:"#fff",boxShadow:"0 0 6px 2px rgba(255,255,255,.9)"}} />
+              </div>
+
+              {/* ── T4: Top-left — H seg then V seg ── */}
+              {/* H: x 35→100, y 144 */}
+              <div style={{position:"absolute",top:144,left:35,width:65,height:2,background:"rgba(245,0,87,.3)"}}>
+                {/* pulse — starts at logo side (right), travels left */}
+                <div className="cb-p3" style={{position:"absolute",top:-2,right:0,width:6,height:6,borderRadius:"50%",background:"#E040FB",boxShadow:"0 0 6px 2px rgba(224,64,251,.9)"}} />
+              </div>
+              {/* V: x 35, y 55→145 */}
+              <div style={{position:"absolute",top:55,left:34,width:2,height:90,background:"rgba(245,0,87,.3)"}}>
+                <div style={{position:"absolute",top:-3,left:-2,width:6,height:6,background:"#F50057",boxShadow:"0 0 6px 3px rgba(245,0,87,.8)"}} />
+              </div>
+              {/* corner node */}
+              <div style={{position:"absolute",top:141,left:32,width:5,height:5,background:"rgba(245,0,87,.9)",boxShadow:"0 0 4px rgba(245,0,87,.6)"}} />
+
+              {/* ── T5: Left  x 20→100, y 210 ── */}
+              <div style={{position:"absolute",top:209,left:20,width:80,height:2,background:"rgba(224,64,251,.3)"}}>
+                <div style={{position:"absolute",left:28,top:-1,width:4,height:4,background:"rgba(224,64,251,.8)"}} />
+                <div style={{position:"absolute",left:-3,top:-2,width:6,height:6,background:"#E040FB",boxShadow:"0 0 6px 3px rgba(224,64,251,.8)"}} />
+                {/* pulse — starts at logo side (right), travels left */}
+                <div className="cb-p4" style={{position:"absolute",top:-2,right:0,width:6,height:6,borderRadius:"50%",background:"#fff",boxShadow:"0 0 6px 2px rgba(255,255,255,.9)"}} />
+              </div>
+
+              {/* ── T6: Bottom-left — H seg then V seg ── */}
+              {/* H: x 35→100, y 275 */}
+              <div style={{position:"absolute",top:274,left:35,width:65,height:2,background:"rgba(245,0,87,.3)"}}>
+                {/* pulse — starts at logo side (right), travels left */}
+                <div className="cb-p5" style={{position:"absolute",top:-2,right:0,width:6,height:6,borderRadius:"50%",background:"#F50057",boxShadow:"0 0 6px 2px rgba(245,0,87,.9)"}} />
+              </div>
+              {/* V: x 35, y 275→375 */}
+              <div style={{position:"absolute",top:275,left:34,width:2,height:100,background:"rgba(245,0,87,.3)"}}>
+                <div style={{position:"absolute",bottom:-3,left:-2,width:6,height:6,background:"#F50057",boxShadow:"0 0 6px 3px rgba(245,0,87,.8)"}} />
+              </div>
+              {/* corner node */}
+              <div style={{position:"absolute",top:271,left:32,width:5,height:5,background:"rgba(245,0,87,.9)",boxShadow:"0 0 4px rgba(245,0,87,.6)"}} />
+
+              {/* ── T7: Bottom  x 210, y 320→400 ── */}
+              <div style={{position:"absolute",top:320,left:209,width:2,height:80,background:"rgba(224,64,251,.3)"}}>
+                <div style={{position:"absolute",top:28,left:-1,width:4,height:4,background:"rgba(224,64,251,.8)"}} />
+                <div style={{position:"absolute",bottom:-3,left:-2,width:6,height:6,background:"#E040FB",boxShadow:"0 0 6px 3px rgba(224,64,251,.8)"}} />
+                {/* pulse — starts at logo side (top), travels down */}
+                <div className="cb-p6" style={{position:"absolute",top:0,left:-2,width:6,height:6,borderRadius:"50%",background:"#fff",boxShadow:"0 0 6px 2px rgba(255,255,255,.9)"}} />
+              </div>
+
+              {/* ── T8: Bottom-right — H seg then V seg ── */}
+              {/* H: x 320→388, y 275 */}
+              <div style={{position:"absolute",top:274,left:320,width:68,height:2,background:"rgba(224,64,251,.3)"}}>
+                {/* pulse — starts at logo side (left:0), travels right */}
+                <div className="cb-p7" style={{position:"absolute",top:-2,left:0,width:6,height:6,borderRadius:"50%",background:"#E040FB",boxShadow:"0 0 6px 2px rgba(224,64,251,.9)"}} />
+              </div>
+              {/* V: x 386, y 275→375 */}
+              <div style={{position:"absolute",top:275,left:385,width:2,height:100,background:"rgba(224,64,251,.3)"}}>
+                <div style={{position:"absolute",bottom:-3,left:-2,width:6,height:6,background:"#E040FB",boxShadow:"0 0 6px 3px rgba(224,64,251,.8)"}} />
+              </div>
+              {/* corner node */}
+              <div style={{position:"absolute",top:271,left:383,width:5,height:5,background:"rgba(224,64,251,.9)",boxShadow:"0 0 4px rgba(224,64,251,.6)"}} />
+
+              {/* ── Ambient glow behind logo ── */}
+              <div style={{
+                position:"absolute",top:"50%",left:"50%",
+                width:290,height:290,borderRadius:"50%",
+                background:"radial-gradient(circle, rgba(224,64,251,.18) 0%, rgba(245,0,87,.08) 55%, transparent 72%)",
+                transform:"translate(-50%,-50%)",
+                pointerEvents:"none",zIndex:1,
+              }} />
+
+              {/* ── Logo ── */}
+              <div style={{position:"absolute",top:"50%",left:"50%",transform:"translate(-50%,-50%)",zIndex:10}}>
+                <Image
+                  src="/photos/R_logo_bng.png"
+                  alt="RickFolio logo"
+                  width={220}
+                  height={220}
+                  priority
+                  className="cb-logo"
+                  style={{borderRadius:"50%",width:220,height:220,objectFit:"cover",display:"block"}}
+                />
+              </div>
+
             </div>
           </div>
-          )}
 
         </div>
       </section>
@@ -350,7 +475,7 @@ export default function HomePage() {
                       section={section}
                       index={i}
                       videoLink={
-                        section.section_type === "projects" && PROJECTS_WITH_VIDEO.has(section.title)
+                        section.section_type === "projects" && section.has_video
                           ? "/videos"
                           : undefined
                       }
