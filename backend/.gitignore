@@ -16,16 +16,12 @@ wheels/
 .installed.cfg
 
 # Virtual environments
-.env
 .venv
-env/
 venv/
-ENV/
 
 # Environment variables
 .env
-.env.local
-.env.*.local
+!.env.example
 
 # FastAPI / Uvicorn
 *.log
