@@ -18,9 +18,34 @@ interface ResumeSection {
   start_date: string | null;
   end_date: string | null;
   order: number;
+  has_video: boolean;
+  youtube_url: string | null;
 }
 interface User    { id: number; full_name: string | null; email: string; role: string; created_at: string; }
 interface Comment { id: number; content: string; section_id: number; author: { id: number; full_name: string | null; email: string }; created_at: string; }
+
+const HAS_VIDEO_TAG = " [has_video]";
+const YT_TAG_RE = /\[yt:([^\]]+)\]$/;
+
+// Strip both tags from POST/PUT responses (those endpoints return the raw DB row).
+function normalizeSection(s: ResumeSection): ResumeSection {
+  let desc = s.description ?? "";
+  let youtube_url: string | null = s.youtube_url ?? null;
+
+  const ytMatch = desc.match(YT_TAG_RE);
+  if (ytMatch) {
+    youtube_url = ytMatch[1];
+    desc = desc.slice(0, -ytMatch[0].length);
+  }
+
+  let has_video = s.has_video ?? false;
+  if (desc.endsWith(HAS_VIDEO_TAG)) {
+    has_video = true;
+    desc = desc.slice(0, -HAS_VIDEO_TAG.length);
+  }
+
+  return { ...s, description: desc || null, has_video, youtube_url };
+}
 
 const inputCls =
   "w-full rounded-lg px-4 py-2.5 text-sm text-white placeholder-[#A0A0B8] focus:outline-none transition-all";
@@ -47,6 +72,8 @@ export default function AdminPage() {
     start_date: "",
     end_date: "",
     order: 0,
+    hasVideo: false,
+    youtubeUrl: "",
   });
   const [editId, setEditId] = useState<number | null>(null);
 
@@ -82,23 +109,30 @@ export default function AdminPage() {
     start_date: "",
     end_date: "",
     order: 0,
+    hasVideo: false,
+    youtubeUrl: "",
   });
 
   const handleSave = async () => {
     try {
+      let encodedDesc = formData.description || "";
+      if (formData.hasVideo) encodedDesc += HAS_VIDEO_TAG;
+      if (formData.youtubeUrl.trim()) encodedDesc += `[yt:${formData.youtubeUrl.trim()}]`;
       const payload = {
-        ...formData,
-        subtitle:    formData.subtitle    || null,
-        description: formData.description || null,
-        start_date:  formData.start_date  || null,
-        end_date:    formData.end_date    || null,
+        section_type: formData.section_type,
+        title:        formData.title,
+        subtitle:     formData.subtitle    || null,
+        description:  encodedDesc          || null,
+        start_date:   formData.start_date  || null,
+        end_date:     formData.end_date    || null,
+        order:        formData.order,
       };
       if (editId) {
         const res = await api.put(`/resume/${editId}`, payload);
-        setSections((s) => s.map((x) => (x.id === editId ? res.data : x)));
+        setSections((s) => s.map((x) => (x.id === editId ? normalizeSection(res.data) : x)));
       } else {
         const res = await api.post("/resume/", payload);
-        setSections((s) => [...s, res.data]);
+        setSections((s) => [...s, normalizeSection(res.data)]);
       }
       setShowForm(false);
       setEditId(null);
@@ -135,11 +169,13 @@ export default function AdminPage() {
     setFormData({
       section_type: s.section_type,
       title:        s.title,
-      subtitle:     s.subtitle     ?? "",
-      description:  s.description  ?? "",
-      start_date:   s.start_date   ?? "",
-      end_date:     s.end_date     ?? "",
+      subtitle:     s.subtitle      ?? "",
+      description:  s.description   ?? "",
+      start_date:   s.start_date    ?? "",
+      end_date:     s.end_date      ?? "",
       order:        s.order,
+      hasVideo:     s.has_video,
+      youtubeUrl:   s.youtube_url   ?? "",
     });
     setShowForm(true);
   };
@@ -278,6 +314,43 @@ export default function AdminPage() {
                       style={inputStyle}
                     />
                   </div>
+                  {formData.section_type === "projects" && (
+                    <div className="space-y-3">
+                      <div className="flex items-center gap-3">
+                        <input
+                          id="hasVideo"
+                          type="checkbox"
+                          checked={formData.hasVideo}
+                          onChange={(e) =>
+                            setFormData((f) => ({
+                              ...f,
+                              hasVideo: e.target.checked,
+                              youtubeUrl: e.target.checked ? f.youtubeUrl : "",
+                            }))
+                          }
+                          className="w-4 h-4 rounded accent-[#E040FB] cursor-pointer"
+                        />
+                        <label htmlFor="hasVideo" className="text-sm cursor-pointer" style={{ color: "#A0A0B8" }}>
+                          Has video demo
+                        </label>
+                      </div>
+                      {formData.hasVideo && (
+                        <div>
+                          <label className="label">
+                            YouTube URL{" "}
+                            <span style={{ color: "rgba(160,160,184,0.5)" }}>(optional)</span>
+                          </label>
+                          <input
+                            value={formData.youtubeUrl}
+                            onChange={(e) => setFormData((f) => ({ ...f, youtubeUrl: e.target.value }))}
+                            placeholder="https://www.youtube.com/watch?v=..."
+                            className={inputCls}
+                            style={inputStyle}
+                          />
+                        </div>
+                      )}
+                    </div>
+                  )}
                   <div>
                     <label className="label">
                       Order{" "}
