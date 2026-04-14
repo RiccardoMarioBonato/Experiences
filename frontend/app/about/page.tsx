@@ -37,7 +37,7 @@ const timeline = [
       "Software & hardware support, customer sales assistance, and initial web development setup for clients. Media editing with Vegas Pro, Photoshop, and Blender. Trilingual: Thai (Native), English (Master), Italian (Native).",
   },
   {
-    year: "Oct 2021 – Oct 2027",
+    year: "Jun 2023 – Oct 2027",
     title: "Bachelor's in Software and Knowledge Engineering",
     place: "Kasetsart University · Bangkok, Thailand",
     description:
@@ -73,8 +73,8 @@ export default function AboutPage() {
               style={{ background: "linear-gradient(135deg, #E040FB, #F50057)" }}
             />
             <Image
-              src="/photos/portrait.png"
-              alt="Riccardo M. Bonato — portrait"
+              src="/photos/Universal.jpg"
+              alt="Riccardo M. Bonato portrait"
               width={280}
               height={360}
               priority
@@ -115,7 +115,7 @@ export default function AboutPage() {
             <p className="text-[#A0A0B8] text-lg leading-relaxed mb-6">
               When I&apos;m not building things, you&apos;ll find me exploring new tech, hitting the gym,
               or getting lost in a good film. I thrive in collaborative environments and enjoy
-              working across the full stack — from database schema design to polished UIs.
+              working across the full stack, from database schema design to polished UIs.
             </p>
 
             {/* Meta chips */}
@@ -205,7 +205,7 @@ export default function AboutPage() {
             />
             <Image
               src="/photos/hero.png"
-              alt="Riccardo — professional look"
+              alt="Riccardo - professional look"
               width={400}
               height={480}
               className="w-full h-64 object-cover transition-transform duration-300 group-hover:scale-105 rounded-xl"
@@ -224,7 +224,7 @@ export default function AboutPage() {
             />
             <Image
               src="/photos/fun.png"
-              alt="Riccardo — candid / fun shot"
+              alt="Riccardo candid / fun shot"
               width={400}
               height={480}
               className="w-full h-64 object-cover transition-transform duration-300 group-hover:scale-105 rounded-xl"
@@ -243,7 +243,7 @@ export default function AboutPage() {
             />
             <Image
               src="/photos/event.jpg"
-              alt="Riccardo — at an event"
+              alt="Riccardo at an event"
               width={400}
               height={480}
               className="w-full h-64 object-cover transition-transform duration-300 group-hover:scale-105 rounded-xl"
@@ -331,7 +331,7 @@ export default function AboutPage() {
       <section className="max-w-5xl mx-auto px-6 py-16 text-center">
         <h2 className="text-3xl font-bold mb-3">Want to work together?</h2>
         <p className="text-[#A0A0B8] mb-8 max-w-lg mx-auto">
-          I&apos;m currently open to new opportunities — full-time, contract, or freelance.
+          I&apos;m currently open to new opportunities, full-time, contract, or freelance.
           Drop me a line and let&apos;s build something great.
         </p>
         <div className="flex items-center justify-center gap-4 flex-wrap">
