@@ -34,5 +34,7 @@ class ResumeSectionOut(BaseModel):
     order: int
     created_at: datetime
     updated_at: datetime
+    has_video: bool = False
+    youtube_url: str | None = None
 
     model_config = {"from_attributes": True}
