@@ -178,6 +178,27 @@ SECTIONS = [
 ]
 
 
+# Tags to append to existing project descriptions.
+# Value is the exact suffix that must appear at the END of description.
+VIDEO_TAGS: dict[str, str] = {
+    "Fruits Anomaly Detector": (
+        " [has_video][yt:https://www.youtube.com/watch?v=qsnYS9TW0rA]"
+    ),
+    "SleepEfficiencyPrediction": (
+        " [has_video][yt:https://www.youtube.com/watch?v=h2TsERTA184&t=303s]"
+    ),
+    "Tactical Hero Battle Game": (
+        " [has_video][yt:https://www.youtube.com/watch?v=_GoVpilOQjs&t=213s]"
+    ),
+    "UniPlus": (
+        " [has_video][yt:https://www.youtube.com/watch?v=Omv3rXfd7RY]"
+    ),
+    "MoleDiver": (
+        " [has_video][yt:https://www.youtube.com/watch?v=YeRQQ-hIEOQ&t=281s]"
+    ),
+}
+
+
 NEW_PROJECTS = [
     {
         "section_type": "projects",
@@ -287,6 +308,24 @@ def seed():
             print(f"✅ Added {added} new project(s)")
         else:
             print("ℹ️  All new projects already present, skipping")
+
+        # Append video tags to project descriptions (idempotent)
+        from models.resume import ResumeSection as RS
+        updated = 0
+        for title, suffix in VIDEO_TAGS.items():
+            row = db.query(RS).filter(RS.title == title).first()
+            if row is None:
+                print(f"⚠️  Project not found in DB: {title!r}")
+                continue
+            current = row.description or ""
+            if not current.endswith(suffix):
+                row.description = current + suffix
+                updated += 1
+        if updated:
+            db.commit()
+            print(f"✅ Applied video tags to {updated} project(s)")
+        else:
+            print("ℹ️  Video tags already present on all projects, skipping")
 
     finally:
         db.close()
