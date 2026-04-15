@@ -1,8 +1,9 @@
 # RickFolio Resume Platform
 
-> "This isn't a PDF. It's a living resume  built from scratch, designed to show you exactly what I can do before you even reach out."
+## Project Description
+> "This isn't a boring PDF. It's an interactive resume designed to show you exactly what I can do before you even reach out."
 
-**RickFolio** is a full-stack, role-based resume portfolio platform built by **Riccardo M. Bonato**. Instead of a static PDF, this resume lives as a dynamic, interactive site managed through an admin, annotated by recruiters with comments, and publicly viewable by anyone with the link.
+**RickFolio** is a full-stack, role-based resume portfolio platform built by **Riccardo M. Bonato**. Instead of a static PDF, this resume lives as an interactive site managed through an admin, annotated by recruiters with comments, and publicly viewable by anyone.
 
 
 ---
@@ -14,9 +15,6 @@
 | **Type** | Full-Stack Web Application |
 | **Architecture** | Layered (N-Tier) Architecture |
 | **Containerization** | Docker + Docker Compose |
-| **Course** | Software Architecture |
-
-This project was developed as a Software Architecture course assignment at **Kasetsart University** by student **Riccardo M. Bonato** (ID: 6610545502).
 
 ---
 
@@ -50,8 +48,8 @@ docker-compose.yml
 | Characteristic | Type | How It Is Addressed |
 |---|---|---|
 | Security | Explicit | JWT (HS256) + bcrypt + require_role() enforced via FastAPI Depends() on every protected endpoint |
-| Maintainability | Explicit | Strict 4-layer separation — routers handle HTTP only, services handle logic, models handle data. Zero cross-layer violations confirmed by automated grep audit. |
-| Simplicity | Implicit | Single quantum — one PostgreSQL database, one Docker Compose file, no distributed complexity |
+| Maintainability | Explicit | Strict 4-layer separation - routers handle HTTP only, services handle logic, models handle data. Zero cross-layer violations confirmed by automated grep audit. |
+| Simplicity | Implicit | Single quantum - one PostgreSQL database, one Docker Compose file, no distributed complexity |
 | Deployability | Implicit | All services containerized with health checks and dependency ordering in docker-compose.yml |
 
 ---
@@ -90,7 +88,7 @@ docker-compose.yml
 ## Technology Stack
 
 ### Frontend
-- **Next.js 14**  App Router, SSR for public resume page (SEO friendly)
+- **Next.js 14**  App Router, SSR for public resume page 
 - **Tailwind CSS**  Responsive, utility-first styling
 - **Axios**  HTTP client with JWT interceptors
 
@@ -221,9 +219,9 @@ docker-compose exec db psql -U postgres -d rickfolio
 > Screenshots taken from the live development build.
 > The system is fully functional with all three roles operational.
 
-### Public Portfolio View (Guest)
+### Public Portfolio View 
 ![Guest view of the public portfolio page](screenshots/guest_landing.png)
-> The live resume page showing sections, project cards, and video badges — no login required.
+> The live resume page showing sections, project cards, and video badges - no login required.
 
 ### Login Page
 ![Login page with email and password fields](screenshots/guest_login.png)
@@ -237,46 +235,39 @@ docker-compose exec db psql -U postgres -d rickfolio
 ![Recruiter view with expandable sections and comment threads](screenshots/Recruiter_Comment.png)
 > Authenticated recruiters can expand any section and leave, edit, or delete feedback inline.
 
----
+### Admin Add Section Form
+![Admin add section form with Has Video Demo checkbox](screenshots/admin_addsection.png)
+> Admin creating a new resume section with type selector, title, subtitle, dates, description, and the Has Video Demo checkbox.
 
-## Architecture Audit Results
+### Guest Videos Page
+![Guest view of the project videos page](screenshots/guest_videos.png)
+> Public videos page showing embedded YouTube demos pulled dynamically from the database — no login required.
 
-An automated audit was performed against the codebase to verify architectural integrity:
+### Recruiter Portfolio Review
+![Recruiter view showing Portfolio Review with expandable sections](screenshots/recruiter_review.png)
+> Authenticated recruiter browsing all resume sections with comment counts and expand controls.
 
-| Check | Result | Status |
-|---|---|---|
-| HTTPException in services/ | 0 violations | ✅ PASS |
-| Direct DB imports in routers/ | 0 violations | ✅ PASS |
-| Pydantic validation on all POST/PUT endpoints | 7/7 covered | ✅ PASS |
-| Dead code in services/ | 0 orphaned functions | ✅ PASS |
-| Sinkhole rate (endpoint level) | Under 20% | ✅ PASS |
+### About Me
+![Guest view of the About Me page](screenshots/guest_aboutme.png)
+> Public About Me page showing personal bio, photo, location badges, and social links.
 
----
+### About Me 2
+![About Me page scrolled to show skills and work history](screenshots/guest_aboutme2.png)
+> Skills grid organized by category and a career timeline showing work experience and education.
 
-## Architecture Fitness Functions
+### Email 
+![Gmail inbox showing a real email received from the RickFolio contact form](screenshots/recruiter_email.png)
+> Proof the contact form sends real emails via Gmail SMTP — message received in inbox with correct sender and subject.
 
-### FF-01: Layer Isolation (Automated)
-**Verifies:** Maintainability  
-**Rule:** No file in `routers/` may import from `database.py` or any SQLAlchemy model directly. No file in `services/` may import `HTTPException`.  
-**Command:**
-```bash
-grep -r "from database import\|from models import\|HTTPException" backend/routers/ backend/services/
-```
-**Result:** Zero results — confirmed clean.
-
-### FF-02: Endpoint Authorization Coverage (Manual)
-**Verifies:** Security  
-**Rule:** Every protected endpoint must return 401 without a valid JWT and 403 with a token of insufficient role.  
-**Public endpoints (exempt):** GET /resume/, GET /comments/{id}, POST /auth/login, POST /auth/register, GET /auth/google, GET /auth/google/callback, POST /contact, GET /health  
-**Result:** Manually verified — all protected endpoints enforce auth correctly.
-
----
+### CodeCharta 
+![Updated CodeCharta 3D visualization of the codebase](screenshots/Updated_Code_Charta.png)
+> Updated CodeCharta map showing frontend and backend structure..
 
 ## Author
 
 **Riccardo M. Bonato**  
 Student ID: 6610545502  
-Software and Knowledge Engineering — Kasetsart University  
+Software and Knowledge Engineering - Kasetsart University  
 Full-Stack Developer | Bangkok, Thailand  
 - GitHub: `https://github.com/RiccardoMarioBonato`  
 - Email: Rickst0702@gmail.com  
