@@ -1,63 +1,3 @@
-# services:
-#   db:
-#     image: postgres:16-alpine
-#     container_name: rickfolio_db
-#     restart: unless-stopped
-#     environment:
-#       POSTGRES_USER: rickfolio
-#       POSTGRES_PASSWORD: rickfolio
-#       POSTGRES_DB: rickfolio
-#     volumes:
-#       - postgres_data:/var/lib/postgresql/data
-#     ports:
-#       - "5433:5433"
-#     healthcheck:
-#       test: [ "CMD-SHELL", "pg_isready -U rickfolio" ]
-#       interval: 10s
-#       timeout: 5s
-#       retries: 5
-
-#   backend:
-#     build:
-#       context: ./backend
-#       dockerfile: Dockerfile
-#     container_name: rickfolio_backend
-#     restart: unless-stopped
-#     depends_on:
-#       db:
-#         condition: service_healthy
-#     env_file:
-#       - ./backend/.env
-#     environment:
-#       DATABASE_URL: postgresql://rickfolio:rickfolio@db:5432/rickfolio
-#     ports:
-#       - "8000:8000"
-#     volumes:
-#       - ./backend:/app
-#     command: >
-#       sh -c "alembic upgrade head &&
-#              python seed.py &&
-#              uvicorn main:app --host 0.0.0.0 --port 8000 --reload"
-
-#   frontend:
-#     build:
-#       context: ./frontend
-#       dockerfile: Dockerfile.dev
-#     container_name: rickfolio_frontend
-#     restart: unless-stopped
-#     depends_on:
-#       - backend
-#     environment:
-#       NEXT_PUBLIC_API_URL: http://localhost:8000
-#     ports:
-#       - "3000:3000"
-#     volumes:
-#       - ./frontend:/app
-#     command: sh -c "npm install && npm run dev"
-
-# volumes:
-#   postgres_data:
-
 services:
   db:
     image: postgres:16-alpine
@@ -98,6 +38,23 @@ services:
       sh -c "alembic upgrade head &&
              python seed.py &&
              uvicorn main:app --host 0.0.0.0 --port 8000 --reload"
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile.dev
+    container_name: rickfolio_frontend
+    restart: unless-stopped
+    depends_on:
+      - backend
+    environment:
+      NEXT_PUBLIC_API_URL: http://localhost:8000
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    command: sh -c "npm install && npm run dev"
 
 volumes:
   rickfolio_postgres_data:
